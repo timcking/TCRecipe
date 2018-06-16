@@ -1,5 +1,6 @@
 package com.timothyking.tcrecipe;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,8 +32,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String EXTRA_MESSAGE = "com.timothyking.tcrecipe.MESSAGE";
     private EditText editSearch;
     public  static final String TAG  = "TCRecipe";
     Button buttonSearch;
@@ -42,6 +46,25 @@ public class MainActivity extends AppCompatActivity {
     HashMap<Integer, String> hmapImage = new HashMap<Integer, String>();
     HashMap<Integer, String> hmapUrl = new HashMap<Integer, String>();
 
+    public void getRecipeItem(int position) {
+        String calories = hmapCalories.get(position);
+        String label = hmapLabel.get(position);
+        String url = hmapUrl.get(position);
+        String image = hmapImage.get(position);
+        List<String> listStrings = new ArrayList<String>();
+        listStrings.add(label);
+        listStrings.add(calories);
+        listStrings.add(url);
+        listStrings.add(image);
+
+        // ToDo, call new activity
+        Intent intent = new Intent(this, RecipeActivity.class);
+        List<String> message = listStrings;
+        intent.putExtra(EXTRA_MESSAGE, (Serializable) message);
+        startActivity(intent);
+
+        Toast.makeText(MainActivity.this, "URL: " + url, Toast.LENGTH_LONG).show();
+    }
 
     public void searchRecipe (View view) {
         editSearch = (EditText) findViewById(R.id.editSearch);
@@ -67,9 +90,7 @@ public class MainActivity extends AppCompatActivity {
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // ToDo, call new activity
-                String url = hmapUrl.get(position);
-                Toast.makeText(MainActivity.this, "URL: " + url, Toast.LENGTH_LONG).show();
+                getRecipeItem(position);
             }
         });
     }
