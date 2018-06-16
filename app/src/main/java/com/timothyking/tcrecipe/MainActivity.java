@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private EditText editSearch;
@@ -35,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
     Button buttonSearch;
     ListView mainListView;
     ListAdapter listAdapter;
+    HashMap<Integer, String> hmapCalories = new HashMap<Integer, String>();
+    HashMap<Integer, String> hmapLabel = new HashMap<Integer, String>();
+    HashMap<Integer, String> hmapImage = new HashMap<Integer, String>();
+    HashMap<Integer, String> hmapUrl = new HashMap<Integer, String>();
+
 
     public void searchRecipe (View view) {
         editSearch = (EditText) findViewById(R.id.editSearch);
@@ -45,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         String myURL = getString(R.string.urlSearch) + strSearch;
 
         task.execute(myURL);
-        Log.i("***** Searched ***** ", strSearch);
+        Log.i(TAG, strSearch);
     }
 
     @Override
@@ -56,6 +63,15 @@ public class MainActivity extends AppCompatActivity {
         // Find the ListView resource.
         mainListView = (ListView) findViewById( R.id.mainListView );
         buttonSearch = findViewById(R.id.buttonSearch);
+
+        mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // ToDo, call new activity
+                String url = hmapUrl.get(position);
+                Toast.makeText(MainActivity.this, "URL: " + url, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public class DownloadTask extends AsyncTask<String, Void, String> {
@@ -78,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
                     result.append(line);
                 }
 
-                // TCK, never triggers postexecute
                 return result.toString();
 
             } catch (MalformedURLException e) {
@@ -111,13 +126,18 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject recipe = jsonPart.getJSONObject("recipe");
 
                     String label = recipe.getString("label");
-                    Log.i(TAG, label);
+                    String image = recipe.getString("image");
+                    String url = recipe.getString("url");
                     labelList.add(i, label);
 
                     double calories = recipe.getDouble("calories");
                     DecimalFormat df = new DecimalFormat("##,###");
                     String formattedCal = df.format(calories);
-                    Log.i(TAG, formattedCal);
+
+                    hmapCalories.put(i, formattedCal);
+                    hmapLabel.put(i, label);
+                    hmapImage.put(i, image);
+                    hmapUrl.put(i, url);
                 }
             } catch(JSONException e) {
                 Toast.makeText(MainActivity.this, "Not found, try another ingredient", Toast.LENGTH_LONG).show();
