@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText editSearch;
     public  static final String TAG  = "TCRecipe";
     Button buttonSearch;
+    ListView mainListView;
+    ListAdapter listAdapter;
 
     public void searchRecipe (View view) {
         editSearch = (EditText) findViewById(R.id.editSearch);
@@ -51,29 +54,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Find the ListView resource.
-        ListView mainListView = (ListView) findViewById( R.id.mainListView );
+        mainListView = (ListView) findViewById( R.id.mainListView );
         buttonSearch = findViewById(R.id.buttonSearch);
-
-        // Create and populate a List of planet names.
-        String[] planets = new String[] { "Mercury", "Venus", "Earth", "Mars",
-                "Jupiter", "Saturn", "Uranus", "Neptune"};
-        ArrayList<String> planetList = new ArrayList<String>();
-        planetList.addAll( Arrays.asList(planets) );
-
-        // Create ArrayAdapter using the planet list.
-        ListAdapter listAdapter = new ArrayAdapter<String>(this, R.layout.simplerow, planetList);
-
-        // Add more planets. If you passed a String[] instead of a List<String>
-        // into the ArrayAdapter constructor, you must not add more items.
-        // Otherwise an exception will occur.
-        planetList.add("Alpha");
-        planetList.add("Beta");
-        planetList.add("Gamma");
-        planetList.add("Omega");
-        planetList.add("Chi");
-
-        // Set the ArrayAdapter as the ListView's adapter.
-        mainListView.setAdapter( listAdapter );
     }
 
     public class DownloadTask extends AsyncTask<String, Void, String> {
@@ -115,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            ArrayList<String> labelList = new ArrayList<String>();
+            // Create ArrayAdapter using the label list
+            ListAdapter listAdapter = new ArrayAdapter<String>(MainActivity.this, R.layout.simplerow, labelList);
 
             try {
                 JSONObject jsonObject = new JSONObject(result);
@@ -126,16 +111,21 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject recipe = jsonPart.getJSONObject("recipe");
 
                     String label = recipe.getString("label");
-                    double calories = recipe.getDouble("calories");
-
                     Log.i(TAG, label);
-                    // ToDo, convert to string 1,234
-                    // Log.i(TAG, calories);
+                    labelList.add(i, label);
+
+                    double calories = recipe.getDouble("calories");
+                    DecimalFormat df = new DecimalFormat("##,###");
+                    String formattedCal = df.format(calories);
+                    Log.i(TAG, formattedCal);
                 }
             } catch(JSONException e) {
                 Toast.makeText(MainActivity.this, "Not found, try another ingredient", Toast.LENGTH_LONG).show();
                 Log.e(TAG, "error while fetching weather info", e);
             }
+
+            // Set the ArrayAdapter as the ListView's adapter.
+            mainListView.setAdapter( listAdapter );
         }
     }
 }
