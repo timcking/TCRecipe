@@ -51,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
         String label = hmapLabel.get(position);
         String url = hmapUrl.get(position);
         String image = hmapImage.get(position);
-        List<String> listStrings = new ArrayList<String>();
+
+        ArrayList<String> listStrings = new ArrayList<>();
+        // List<String> listStrings = new ArrayList<String>();
         listStrings.add(label);
         listStrings.add(calories);
         listStrings.add(url);
@@ -59,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         // ToDo, call new activity
         Intent intent = new Intent(this, RecipeActivity.class);
-        List<String> message = listStrings;
-        intent.putExtra(EXTRA_MESSAGE, (Serializable) message);
+        // List<String> message = listStrings;
+        intent.putExtra(EXTRA_MESSAGE, listStrings);
         startActivity(intent);
 
         Toast.makeText(MainActivity.this, "URL: " + url, Toast.LENGTH_LONG).show();
