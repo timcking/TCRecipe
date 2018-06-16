@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/StudioProjects-TCRecipe.iml" filepath="$PROJECT_DIR$/StudioProjects-TCRecipe.iml" />
       <module fileurl="file://$PROJECT_DIR$/TCRecipe.iml" filepath="$PROJECT_DIR$/TCRecipe.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/TCRecipe-app.iml" filepath="$PROJECT_DIR$/app/TCRecipe-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
