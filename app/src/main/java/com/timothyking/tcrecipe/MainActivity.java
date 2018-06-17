@@ -1,11 +1,13 @@
 package com.timothyking.tcrecipe;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -43,12 +45,14 @@ public class MainActivity extends AppCompatActivity {
     HashMap<Integer, String> hmapLabel = new HashMap<Integer, String>();
     HashMap<Integer, String> hmapImage = new HashMap<Integer, String>();
     HashMap<Integer, String> hmapUrl = new HashMap<Integer, String>();
+    HashMap<Integer, String> hmapIngredients = new HashMap<Integer, String>();
 
     public void getRecipeItem(int position) {
         String calories = hmapCalories.get(position);
         String label = hmapLabel.get(position);
         String url = hmapUrl.get(position);
         String image = hmapImage.get(position);
+        String ingredients = hmapIngredients.get(position);
 
         ArrayList<String> listStrings = new ArrayList<>();
         // List<String> listStrings = new ArrayList<String>();
@@ -56,14 +60,13 @@ public class MainActivity extends AppCompatActivity {
         listStrings.add(calories);
         listStrings.add(url);
         listStrings.add(image);
+        listStrings.add(ingredients);
 
         // ToDo, call new activity
         Intent intent = new Intent(this, RecipeActivity.class);
         // List<String> message = listStrings;
         intent.putExtra(EXTRA_MESSAGE, listStrings);
         startActivity(intent);
-
-        Toast.makeText(MainActivity.this, "URL: " + url, Toast.LENGTH_LONG).show();
     }
 
     public void searchRecipe (View view) {
@@ -149,6 +152,14 @@ public class MainActivity extends AppCompatActivity {
                     String label = recipe.getString("label");
                     String image = recipe.getString("image");
                     String url = recipe.getString("url");
+
+                    String ingredients = recipe.getString("ingredientLines");
+                    // Remove brackets from ingredients
+                    ingredients = ingredients.replaceAll("\\[", "").replaceAll("\\]","");
+                    ingredients = ingredients.replaceAll("^\"", "");
+                    ingredients = ingredients.replaceAll("\"$", "").replaceAll("\",\"", "\n");
+                    ingredients = ingredients.replaceAll("\\\\", "");
+
                     labelList.add(i, label);
 
                     double calories = recipe.getDouble("calories");
@@ -159,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                     hmapLabel.put(i, label);
                     hmapImage.put(i, image);
                     hmapUrl.put(i, url);
+                    hmapIngredients.put(i, ingredients);
                 }
             } catch(JSONException e) {
                 Toast.makeText(MainActivity.this, "Not found, try another ingredient", Toast.LENGTH_LONG).show();
@@ -167,6 +179,12 @@ public class MainActivity extends AppCompatActivity {
 
             // Set the ArrayAdapter as the ListView's adapter.
             mainListView.setAdapter( listAdapter );
+
+            // Hide keyboard
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+
+
         }
     }
 }
