@@ -2,11 +2,13 @@ package com.timothyking.tcrecipe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -138,7 +140,25 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(result);
             ArrayList<String> labelList = new ArrayList<String>();
             // Create ArrayAdapter using the label list
-            ListAdapter listAdapter = new ArrayAdapter<String>(MainActivity.this, R.layout.simplerow, labelList);
+            ListAdapter listAdapter = new ArrayAdapter<String>(MainActivity.this,
+                    R.layout.simplerow, labelList) {
+
+                // Alternate row colors
+                @Override
+                public View getView(int position, View listAdapter, ViewGroup parent) {
+                    // Get the current item from ListView
+                    View view = super.getView(position, listAdapter, parent);
+                    if (position % 2 == 1) {
+                        // Set a background color for ListView regular row/item
+                        view.setBackgroundColor(Color.parseColor("#E6F2FF"));
+                    } else {
+                        // Set the background color for alternate row/item
+                        // view.setBackgroundColor(Color.parseColor("#99CCFF"));
+                        view.setBackgroundColor(Color.parseColor("#FFFFB3"));
+                    }
+                    return view;
+                }
+            };
 
             try {
                 JSONObject jsonObject = new JSONObject(result);
