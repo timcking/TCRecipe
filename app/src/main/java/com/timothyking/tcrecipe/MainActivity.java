@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     HashMap<Integer, String> hmapImage = new HashMap<Integer, String>();
     HashMap<Integer, String> hmapUrl = new HashMap<Integer, String>();
     HashMap<Integer, String> hmapIngredients = new HashMap<Integer, String>();
+    HashMap<Integer, String> hmapYield = new HashMap<Integer, String>();
 
     public void getRecipeItem(int position) {
         String calories = hmapCalories.get(position);
@@ -172,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
                     String label = recipe.getString("label");
                     String image = recipe.getString("image");
                     String url = recipe.getString("url");
+                    String yield = recipe.getString("yield");
 
                     String ingredients = recipe.getString("ingredientLines");
                     // Remove brackets from ingredients
@@ -183,14 +185,16 @@ public class MainActivity extends AppCompatActivity {
                     labelList.add(i, label);
 
                     double calories = recipe.getDouble("calories");
+                    double serving = recipe.getDouble("yield");
                     DecimalFormat df = new DecimalFormat("##,###");
-                    String formattedCal = df.format(calories);
+                    String formattedCal = df.format(calories/serving);
 
                     hmapCalories.put(i, formattedCal);
                     hmapLabel.put(i, label);
                     hmapImage.put(i, image);
                     hmapUrl.put(i, url);
                     hmapIngredients.put(i, ingredients);
+                    hmapYield.put(i, ingredients);
                 }
             } catch(JSONException e) {
                 Toast.makeText(MainActivity.this, "Not found, try another ingredient", Toast.LENGTH_LONG).show();

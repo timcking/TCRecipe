@@ -35,7 +35,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         textFood.setText(message.get(0));
         Picasso.get().load(message.get(3)).into(imageFood);
-        textCalories.setText(message.get(1) + " Calories");
+        textCalories.setText(message.get(1) + " Calories per Serving");
         textUrl.setText(message.get(2));
         textIngredients.setText(message.get(4));
     }
