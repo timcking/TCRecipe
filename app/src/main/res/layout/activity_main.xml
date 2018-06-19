@@ -14,7 +14,7 @@
         android:layout_height="45dp"
         android:layout_marginEnd="16dp"
         android:onClick="searchRecipe"
-        android:text="Search"
+        android:text="@string/search"
         app:layout_constraintBaseline_toBaselineOf="@+id/editSearch"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -26,7 +26,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Search ingredient"
+        android:hint="@string/search_ingredient"
         android:inputType="textCapWords"
         android:singleLine="true"
         android:textAllCaps="false"
@@ -36,48 +36,45 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/checkCarb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="8dp"
-        android:text="CheckBox"
+        android:text="@string/low_carb"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editSearch" />
 
     <CheckBox
-        android:id="@+id/checkBox2"
+        android:id="@+id/checkFiber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="CheckBox"
+        android:text="@string/high_fiber"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/checkBox"
+        app:layout_constraintStart_toEndOf="@+id/checkCarb"
         app:layout_constraintTop_toBottomOf="@+id/editSearch" />
 
     <CheckBox
-        android:id="@+id/checkBox3"
+        android:id="@+id/checkFat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginTop="8dp"
-        android:text="CheckBox"
+        android:text="@string/low_fat"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/checkCarb" />
 
     <CheckBox
-        android:id="@+id/checkBox4"
+        android:id="@+id/checkProtein"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="CheckBox"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/checkBox3"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
+        android:text="@string/high_protein"
+        app:layout_constraintStart_toStartOf="@+id/checkFiber"
+        app:layout_constraintTop_toBottomOf="@+id/checkFiber" />
 
     <View
         android:id="@+id/divider"
@@ -88,12 +85,12 @@
         android:background="?android:attr/listDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="147dp" />
+        app:layout_constraintTop_toBottomOf="@+id/checkFat" />
 
     <ListView
         android:id="@+id/mainListView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="435dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"

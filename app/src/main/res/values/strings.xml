@@ -2,4 +2,10 @@
     <string name="app_name">TC Recipe</string>
     <string name="buttonSearch">Search</string>
     <string name="urlSearch">https://api.edamam.com/search?app_id=66e3a98a&amp;app_key=8433b63a361544304f42fed2a669060f&amp;q=</string>
+    <string name="search">Search</string>
+    <string name="search_ingredient">Search ingredient</string>
+    <string name="low_carb">Low-Carb</string>
+    <string name="low_fat">Low-Fat</string>
+    <string name="high_fiber">High-Fiber</string>
+    <string name="high_protein">High-Protein</string>
 </resources>
