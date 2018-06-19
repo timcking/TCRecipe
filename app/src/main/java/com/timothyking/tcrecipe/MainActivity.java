@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
     HashMap<Integer, String> hmapImage = new HashMap<Integer, String>();
     HashMap<Integer, String> hmapUrl = new HashMap<Integer, String>();
     HashMap<Integer, String> hmapIngredients = new HashMap<Integer, String>();
-    HashMap<Integer, String> hmapYield = new HashMap<Integer, String>();
 
     public void getRecipeItem(int position) {
         String calories = hmapCalories.get(position);
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         listStrings.add(image);
         listStrings.add(ingredients);
 
-        // ToDo, call new activity
+        // Call new activity
         Intent intent = new Intent(this, RecipeActivity.class);
         // List<String> message = listStrings;
         intent.putExtra(EXTRA_MESSAGE, listStrings);
@@ -194,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
                     hmapImage.put(i, image);
                     hmapUrl.put(i, url);
                     hmapIngredients.put(i, ingredients);
-                    hmapYield.put(i, ingredients);
                 }
             } catch(JSONException e) {
                 Toast.makeText(MainActivity.this, "Not found, try another ingredient", Toast.LENGTH_LONG).show();
