@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     public  static final String TAG  = "TCRecipe";
     Button buttonSearch;
     ListView mainListView;
-    ListAdapter listAdapter;
     HashMap<Integer, String> hmapCalories = new HashMap<Integer, String>();
     HashMap<Integer, String> hmapLabel = new HashMap<Integer, String>();
     HashMap<Integer, String> hmapImage = new HashMap<Integer, String>();
@@ -56,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         String ingredients = hmapIngredients.get(position);
 
         ArrayList<String> listStrings = new ArrayList<>();
-        // List<String> listStrings = new ArrayList<String>();
         listStrings.add(label);
         listStrings.add(calories);
         listStrings.add(url);
@@ -65,16 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Call new activity
         Intent intent = new Intent(this, RecipeActivity.class);
-        // List<String> message = listStrings;
         intent.putExtra(EXTRA_MESSAGE, listStrings);
         startActivity(intent);
     }
 
     public void searchRecipe (View view) {
-        editSearch = (EditText) findViewById(R.id.editSearch);
+        editSearch = findViewById(R.id.editSearch);
         String strSearch =  (editSearch.getText().toString());
-
-        // &q=butter&diet=low-carb&diet=high-protein
 
         StringBuilder result=new StringBuilder();
 
@@ -104,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
 
-        // Check which checkbox was clicked
+        // Balanced has to be the only one checked
         switch(view.getId()) {
             case R.id.checkFat:
                 if (checked)
@@ -133,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Find the ListView resource.
-        mainListView = (ListView) findViewById( R.id.mainListView );
+        mainListView = findViewById( R.id.mainListView );
         buttonSearch = findViewById(R.id.buttonSearch);
         carb = findViewById(R.id.checkCarb);
         protein = findViewById(R.id.checkProtein);
@@ -223,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                     String yield = recipe.getString("yield");
 
                     String ingredients = recipe.getString("ingredientLines");
-                    // Remove brackets from ingredients
+                    // Clean-up ingredients
                     ingredients = ingredients.replaceAll("\\[", "").replaceAll("\\]","");
                     ingredients = ingredients.replaceAll("^\"", "");
                     ingredients = ingredients.replaceAll("\"$", "").replaceAll("\",\"", "\n");
@@ -253,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
             // Hide keyboard
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
-
 
         }
     }
