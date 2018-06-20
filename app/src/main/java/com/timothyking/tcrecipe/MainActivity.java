@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -26,15 +27,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.timothyking.tcrecipe.MESSAGE";
@@ -48,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     HashMap<Integer, String> hmapImage = new HashMap<Integer, String>();
     HashMap<Integer, String> hmapUrl = new HashMap<Integer, String>();
     HashMap<Integer, String> hmapIngredients = new HashMap<Integer, String>();
+    CheckBox carb, protein, fat, bal;
 
     public void getRecipeItem(int position) {
         String calories = hmapCalories.get(position);
@@ -74,13 +73,58 @@ public class MainActivity extends AppCompatActivity {
     public void searchRecipe (View view) {
         editSearch = (EditText) findViewById(R.id.editSearch);
         String strSearch =  (editSearch.getText().toString());
-        DownloadTask task = new DownloadTask();
+
+        // &q=butter&diet=low-carb&diet=high-protein
+
+        StringBuilder result=new StringBuilder();
+
+        if (carb.isChecked()) {
+            result.append("&diet=low-carb");
+        }
+        if (protein.isChecked()) {
+            result.append("&diet=high-protein");
+        }
+        if (fat.isChecked()) {
+            result.append("&diet=low-fat");
+        }
+        if (bal.isChecked()) {
+            result.append("&diet=balanced");
+        }
 
         // Using string resource
-        String myURL = getString(R.string.urlSearch) + strSearch;
+        String myURL = getString(R.string.urlSearch) + strSearch + result;
 
+        DownloadTask task = new DownloadTask();
         task.execute(myURL);
         Log.i(TAG, strSearch);
+    }
+
+    // ToDo, remove along with onCheckBoxClicked in xml
+    public void onCheckboxClicked(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which checkbox was clicked
+        switch(view.getId()) {
+            case R.id.checkFat:
+                if (checked)
+                    bal.setChecked(false);
+                break;
+            case R.id.checkCarb:
+                if (checked)
+                    bal.setChecked(false);
+                break;
+            case R.id.checkBal:
+                if (checked)
+                    fat.setChecked(false);
+                    carb.setChecked(false);
+                    protein.setChecked(false);
+                break;
+            case R.id.checkProtein:
+                if (checked)
+                    bal.setChecked(false);
+                break;
+        }
     }
 
     @Override
@@ -91,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
         // Find the ListView resource.
         mainListView = (ListView) findViewById( R.id.mainListView );
         buttonSearch = findViewById(R.id.buttonSearch);
+        carb = findViewById(R.id.checkCarb);
+        protein = findViewById(R.id.checkProtein);
+        fat = findViewById(R.id.checkFat);
+        bal = findViewById(R.id.checkBal);
 
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
