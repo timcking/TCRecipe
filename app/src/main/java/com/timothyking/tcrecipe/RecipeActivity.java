@@ -3,6 +3,8 @@ package com.timothyking.tcrecipe;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
@@ -23,16 +25,19 @@ public class RecipeActivity extends AppCompatActivity {
         textFood = (TextView) findViewById( R.id.textFood);
         imageFood = (ImageView) findViewById(R.id.imageFood);
         textCalories = (TextView) findViewById( R.id.textCalories);
-        textUrl = (TextView) findViewById( R.id.textUrl);
         textIngredients = (TextView) findViewById(R.id.textIngredients);
 
         Intent intent = getIntent();
         ArrayList<String> message = (ArrayList<String>) intent.getSerializableExtra(MainActivity.EXTRA_MESSAGE);
 
-        textFood.setText(message.get(0));
         Picasso.get().load(message.get(3)).into(imageFood);
         textCalories.setText(message.get(1) + " Calories per Serving");
-        textUrl.setText(message.get(2));
         textIngredients.setText(message.get(4));
+
+        String food_name = message.get(0);
+        String url = message.get(2);
+        String linkText = "<a href=\"" + url + "\">" + food_name + "</a>";
+        textFood.setText(Html.fromHtml(linkText));
+        textFood.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }

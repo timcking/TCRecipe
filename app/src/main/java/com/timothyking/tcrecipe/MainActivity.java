@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Using string resource
-        String myURL = getString(R.string.urlSearch) + strSearch + result;
+        String myURL = getString(R.string.urlSearch) + strSearch + result + "&to=20";
 
         DownloadTask task = new DownloadTask();
         task.execute(myURL);
